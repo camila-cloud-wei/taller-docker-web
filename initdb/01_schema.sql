@@ -6,5 +6,6 @@ CREATE TABLE IF NOT EXISTS mensajes (
         tipo_consulta VARCHAR(50) NOT NULL,
         area TEXT,
         mensaje TEXT NOT NULL,
+        sentiment_data JSON NULL,
         fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -3,30 +3,30 @@ include 'db.php';
 
 $message = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nombre = htmlspecialchars($_POST['nombre']);
-    $correo = htmlspecialchars($_POST['correo']);
-    $telefono = htmlspecialchars($_POST['telefono']);
-    $tipo_consulta = htmlspecialchars($_POST['tipo_consulta']);
-    $categoria = htmlspecialchars($_POST['categoria']);
-    $mensaje = htmlspecialchars($_POST['mensaje']);
+// if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//     $nombre = htmlspecialchars($_POST['nombre']);
+//     $correo = htmlspecialchars($_POST['correo']);
+//     $telefono = htmlspecialchars($_POST['telefono']);
+//     $tipo_consulta = htmlspecialchars($_POST['tipo_consulta']);
+//     $categoria = htmlspecialchars($_POST['categoria']);
+//     $mensaje = htmlspecialchars($_POST['mensaje']);
 
-    if (!empty($nombre) && !empty($correo) && !empty($telefono) && !empty($tipo_consulta) && !empty($categoria) && !empty($mensaje)) {
-        try {
-            $sql = "INSERT INTO mensajes (nombre, correo, telefono, tipo_consulta, categoria, mensaje) VALUES (?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute([$nombre, $correo, $telefono, $tipo_consulta, $categoria, $mensaje]);
-            $message = "<div class='alert success'>✅ Mensaje guardado correctamente.</div>";
-        } catch (PDOException $e) {
-            $message = "<div class='alert error'>❌ Error al guardar el mensaje: " . $e->getMessage() . "</div>";
-        }
-    } else {
-        $message = "<div class='alert warning'>⚠️ Por favor, completa todos los campos.</div>";
-    }
-}
+//     if (!empty($nombre) && !empty($correo) && !empty($telefono) && !empty($tipo_consulta) && !empty($categoria) && !empty($mensaje)) {
+//         try {
+//             $sql = "INSERT INTO mensajes (nombre, correo, telefono, tipo_consulta, categoria, mensaje) VALUES (?, ?, ?, ?, ?, ?)";
+//             $stmt = $conn->prepare($sql);
+//             $stmt->execute([$nombre, $correo, $telefono, $tipo_consulta, $categoria, $mensaje]);
+//             $message = "<div class='alert success'>✅ Mensaje guardado correctamente.</div>";
+//         } catch (PDOException $e) {
+//             $message = "<div class='alert error'>❌ Error al guardar el mensaje: " . $e->getMessage() . "</div>";
+//         }
+//     } else {
+//         $message = "<div class='alert warning'>⚠️ Por favor, completa todos los campos.</div>";
+//     }
+// }
 
-$stmt = $conn->query("SELECT * FROM mensajes ORDER BY fecha DESC");
-$mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// $stmt = $conn->query("SELECT * FROM mensajes ORDER BY fecha DESC");
+// $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Sentiment Analysis function
 function analyzeSentiment($text) {
@@ -82,8 +82,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Update database query to include sentiment data
-// $stmt = $conn->query("SELECT *, COALESCE(sentiment_data, '{}') as sentiment_data FROM mensajes ORDER BY fecha DESC");
-// $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$stmt = $conn->query("SELECT *, COALESCE(sentiment_data, '{}') as sentiment_data FROM mensajes ORDER BY fecha DESC");
+$mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <main>
     <section class='form-section full-width'>
-        <h3>📝 Formulario de Contacto</h3>
+        <h3>📝 Formulario de Análisis de Sentimientos</h3>
         <?= $message ?>
         <form method='POST' onsubmit='return validarFormulario();'>
             <div class="form-grid">
@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 
                 <div class="form-group full-width">
-                    <label for='mensaje'>Mensaje:</label>
+                    <label for='mensaje'>¿Cómo te sientes el día de hoy?:</label>
                     <textarea name='mensaje' id='mensaje' rows='5' placeholder='Escribe tu mensaje...' required></textarea>
                     <span class="error-message" id="mensajeError"></span>
                 </div>

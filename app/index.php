@@ -92,7 +92,8 @@ $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <meta charset='UTF-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 <title>Arquitectura Cloud - Contenedores Docker</title>
-<link rel='stylesheet' href='style.css'>
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png"/>
+<link rel='stylesheet' href='assets/style.css'>
 <link href='https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap' rel='stylesheet'>
 <script>
 function validarFormulario() {
@@ -355,6 +356,6 @@ document.addEventListener('DOMContentLoaded', function() {
         <p> </p>
     </div>
 </footer>
-<script src='script.js'></script>
+<script src='assets/script.js'></script>
 </body>
 </html>

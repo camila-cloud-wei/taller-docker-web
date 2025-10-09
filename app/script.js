@@ -1,159 +1,96 @@
-// Validaciones en tiempo real
+function validarFormulario() {
+    const nombre = document.getElementById('nombre').value.trim();
+    const correo = document.getElementById('correo').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+    const tipoConsulta = document.getElementById('tipo_consulta').value;
+    const categoria = document.getElementById('categoria').value;
+    const mensaje = document.getElementById('mensaje').value.trim();
+    
+    if (!nombre || !correo || !telefono || !tipoConsulta || !categoria || !mensaje) {
+        alert("Por favor completa todos los campos.");
+        return false;
+    }
+    
+    if (telefono.length < 5) {
+        alert("El teléfono debe tener al menos 5 dígitos.");
+        return false;
+    }
+    
+    return true;
+}
+
+function validarCampo(campo) {
+    const valor = campo.value.trim();
+    const errorElement = document.getElementById(campo.id + 'Error');
+    
+    // Remover clases previas
+    campo.classList.remove('valid', 'invalid');
+    
+    if (campo.type === 'tel' && campo.required) {
+        if (valor.length >= 5) {
+            campo.classList.add('valid');
+            errorElement.textContent = '';
+        } else {
+            campo.classList.add('invalid');
+            errorElement.textContent = 'El teléfono debe tener al menos 5 dígitos.';
+        }
+    }
+    
+    if (campo.type === 'email' && campo.required) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailRegex.test(valor)) {
+            campo.classList.add('valid');
+            errorElement.textContent = '';
+        } else {
+            campo.classList.add('invalid');
+            errorElement.textContent = 'Por favor ingresa un email válido.';
+        }
+    }
+    
+    if (campo.type === 'text' && campo.required && campo.id !== 'telefono') {
+        if (valor.length > 0) {
+            campo.classList.add('valid');
+            errorElement.textContent = '';
+        } else {
+            campo.classList.add('invalid');
+            errorElement.textContent = 'Este campo es obligatorio.';
+        }
+    }
+    
+    if (campo.tagName === 'SELECT' && campo.required) {
+        if (valor !== '') {
+            campo.classList.add('valid');
+            errorElement.textContent = '';
+        } else {
+            campo.classList.add('invalid');
+            errorElement.textContent = 'Este campo es obligatorio.';
+        }
+    }
+    
+    if (campo.tagName === 'TEXTAREA' && campo.required) {
+        if (valor.length > 0) {
+            campo.classList.add('valid');
+            errorElement.textContent = '';
+        } else {
+            campo.classList.add('invalid');
+            errorElement.textContent = 'Este campo es obligatorio.';
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('contactForm');
+    const form = document.querySelector('form');
     const inputs = form.querySelectorAll('input, select, textarea');
     
-    // Patrones de validación
-    const patterns = {
-        nombre: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,}$/,
-        correo: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-        telefono: /^[\d\s\-\+]{10,}$/,
-        mensaje: /^.{10,}$/
-    };
-
-    // Mensajes de error
-    const errorMessages = {
-        nombre: 'El nombre debe tener al menos 2 caracteres y solo contener letras y espacios',
-        correo: 'Por favor ingresa un correo electrónico válido',
-        telefono: 'El teléfono debe tener al menos 10 dígitos',
-        tipo_consulta: 'Por favor selecciona un tipo de consulta',
-        mensaje: 'El mensaje debe tener al menos 10 caracteres'
-    };
-
-    // Validación en tiempo real
     inputs.forEach(input => {
-        if (input.type !== 'checkbox') {
-            input.addEventListener('input', function() {
-                validateField(this);
-            });
-            
-            input.addEventListener('blur', function() {
-                validateField(this);
-            });
-        }
-    });
-
-    // Validación del formulario completo al enviar
-    form.addEventListener('submit', function(e) {
-        let isValid = true;
-        
-        inputs.forEach(input => {
-            if (input.type !== 'checkbox' && input.required) {
-                if (!validateField(input)) {
-                    isValid = false;
-                }
-            }
-        });
-
-        if (!isValid) {
-            e.preventDefault();
-            showNotification('Por favor corrige los errores en el formulario', 'error');
-        }
-    });
-
-    function validateField(field) {
-        const fieldName = field.name;
-        const value = field.value.trim();
-        const errorElement = document.getElementById(`${fieldName}-error`);
-        
-        // Reset estado
-        field.classList.remove('valid', 'invalid');
-        errorElement.textContent = '';
-
-        // Validar campo vacío
-        if (field.required && !value) {
-            field.classList.add('invalid');
-            errorElement.textContent = 'Este campo es obligatorio';
-            return false;
-        }
-
-        // Validar según patrón
-        if (patterns[fieldName] && !patterns[fieldName].test(value)) {
-            field.classList.add('invalid');
-            errorElement.textContent = errorMessages[fieldName];
-            return false;
-        }
-
-        // Validación especial para select
-        if (field.tagName === 'SELECT' && field.required && !value) {
-            field.classList.add('invalid');
-            errorElement.textContent = errorMessages[fieldName];
-            return false;
-        }
-
-        // Campo válido
-        field.classList.add('valid');
-        return true;
-    }
-
-    // Función para mostrar notificaciones
-    function showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `alert ${type}`;
-        notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
-            animation: slideIn 0.3s ease;
-        `;
-
-        document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.remove();
-        }, 5000);
-    }
-
-    // Smooth scroll para navegación
-    document.querySelectorAll('nav a').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-
-    // Efectos hover mejorados
-    const buttons = document.querySelectorAll('button, .social-link, nav a');
-    buttons.forEach(button => {
-        button.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-2px)';
+        input.addEventListener('blur', function() {
+            validarCampo(this);
         });
         
-        button.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-
-    // Animación para elementos al hacer scroll
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+        input.addEventListener('input', function() {
+            if (this.classList.contains('invalid')) {
+                validarCampo(this);
             }
         });
-    }, observerOptions);
-
-    // Observar elementos para animaciones
-    document.querySelectorAll('.form-section, .table-section, .about-section').forEach(section => {
-        section.style.opacity = '0';
-        section.style.transform = 'translateY(20px)';
-        section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(section);
     });
 });

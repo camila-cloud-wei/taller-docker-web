@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span class="logo-text">Grupo 14</span>
         </div>
         <div class="header-titles">
-            <h1>🌐 Taller de Arquitectura Cloud</h1>
+            <h1>🐋 Taller de Arquitectura Cloud</h1>
             <h2>Contenedores con Docker y PHP + MySQL</h2>
         </div>
     </div>
@@ -272,8 +272,11 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
     <div class="footer-bottom">
-        <p>© 2025 Taller Docker — Docente: Juan Carlos López Henao | Desarrollado por Grupo 14</p>
+            <p>&copy; <?php echo date("Y"); ?> G14 Cloud Architects Team. Todos los derechos reservados.</p>
+            <p> Camila Martínez López | Diana Paola Mopan Cabrera | Jose David Arrieta Torres | Luis Alejandro Espinal Arango</p>
+        <p> </p>
     </div>
 </footer>
+<script src='script.js'></script>
 </body>
 </html>

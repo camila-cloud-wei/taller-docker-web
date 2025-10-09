@@ -70,7 +70,18 @@ servicios?
 4. ¿Cómo se comunican los contenedores entre sí dentro de la red interna?
 5. ¿Por qué es importante separar la aplicación web del motor de base de
 datos?
+    - **Seguridad**: Si se compromete la aplicación web, el atacante no tiene acceso directo a la base de datos.
+    - **Escalabilidad**: Cada parte puede crecer independientemente.
+    - **Mantenimiento**: Actualizar uno sin afectar al otro.
+    - **Rendimiento**: Cada parte está optimizada para la tarea que le corresponde.
+      
 6. ¿Qué ventajas tiene Docker frente a un hosting tradicional?
+    - **Consistencia**: la aplicación se comporte igual en desarrollo, testing y producción.
+    - **Control**: Total libertad sobre versiones y configuraciones.
+    - **Portabilidad**: Permite ejecutar la aplicación en cualquier sistema operativo sin modificaciones.
+    - **Eficiencia**: Contenedores ligeros que comparten recursos eficientemente.
+    - **Modernidad**: Docker permite adoptar arquitecturas modernas de microservicios y prácticas DevOps, altamente demandadas en el mercado tecnológico actual.
+      
 7. ¿Qué elementos del ejercicio serían equivalentes a servicios en AWS o
 Azure?
 8. ¿Cómo se evidenció el trabajo colaborativo dentro del equipo?

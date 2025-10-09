@@ -64,7 +64,14 @@ El ejercicio permitió:
 
 Preguntas para la reflexión final
 1. ¿Qué diferencia hay entre un contenedor y una máquina virtual?
+   
+    La diferencia fundamental entre un contenedor y una máquina virtual (MV) se encuentra en la capa de virtualización. Un contenedor virtualiza la capa del sistema operativo, lo que lo hace mucho más ligero,         rápido y portátil; por ello, es ideal para arquitecturas de microservicios. En cambio, la máquina virtual virtualiza el hardware físico completo, proporcionando un entorno totalmente aislado, lo que la hace       más pesada y lenta, pero le otorga la máxima seguridad y una gran flexibilidad de sistema operativo.
+
 2. ¿Qué pasaría si se elimina el contenedor de MySQL pero no el volumen?
+   
+    Los datos persistirían. Esto ocurre porque el contenedor solo contiene la aplicación de MySQL Server y sus archivos de ejecución. El volumen de Docker es el mecanismo de almacenamiento persistente; al no          eliminarlo, los archivos de la base de datos se conservan en el sistema de archivos del host, fuera del contenedor.
+    Sin embargo, el servicio se detiene y desaparece, ya que el contenedor ya no existe. Por lo tanto, la base de datos no estará accesible a través de la red (puerto 3306) hasta que se cree un nuevo contenedor       que se conecte al volumen conservado.
+   
 3. ¿Qué rol cumple el archivo docker-compose.yml en la orquestación de
 servicios?
 4. ¿Cómo se comunican los contenedores entre sí dentro de la red interna?

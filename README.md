@@ -12,6 +12,8 @@
 Crear una aplicación web con PHP y MySQL usando contenedores Docker, implementando un formulario de contacto con validaciones y persistencia de datos.
 
 ## 📸 Capturas
+### Diagrama de arquitectura
+<img width="1338" height="557" alt="image" src="https://github.com/user-attachments/assets/e9f25d7a-9ecc-4cfe-b5f5-c8fc7ed56566" />
 
 ### Formulario Completo
 ![Formulario](images/formulario.png)

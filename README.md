@@ -2,11 +2,10 @@
 
 ## 👥 Equipo y Roles
 - Líder técnico
-- **Camila Martínez López** - Desarrollo Backend
-- **Diana Paola Mopan Cabrera** - Desarrollo Frontend 
+- **Camila Martínez López** - Desarrollo Backend - Documentador
+- **Diana Paola Mopan Cabrera** - Desarrollo Frontend - Documentador
 - **Jose David Arrieta Torres** - Base de Datos
 - **Luis Alejandro Espinal Arango** - Configuración Docker
-- Documentador
 - Expositor
 
 ## 🎯 Objetivo del Ejercicio
@@ -49,20 +48,27 @@ docker compose ps
     La clase PDO en creae una una instancia que representa la conexión con la base de datos, a la clase se le envían el parámetro de dsn con los datos necesarios para conectar a la base de datos como host, nombre de base de datos, usuario, contraseña e información del driver.
 - ### Conexión PDO en db.php
 
-## 🌩️ ¿Cómo se relaciona esto con la arquitectura Cloud?
+## 🌩️ REFLEXIÓN ¿Cómo se relaciona esto con la arquitectura Cloud?
 El ejercicio permitió:
 - **Dividir una aplicación grande** en partes pequeñas que funcionan juntas
 - **Usar contenedores** que empaquetan cada parte de la aplicación  
 - **Conectar servicios** que se pueden agregar o quitar según lo necesitemos
 - **Mantener los datos** aunque reiniciemos los servicios
 
-1. Qué mejoras implementaron.
-2. Cómo se comunican los contenedores entre sí.
-3. Cómo confirmaron la persistencia de datos.
-4. Qué aprendieron sobre la modularidad y arquitectura cloud.
+## 🗣️ Sustentación
+### 1. Qué mejoras implementaron.
+
+   En cuanto al FrontEnd:
+   - Cambios en el diseño, paleta de colores, header, footer, botones, tabla, etc.
+   - Se agregaron 6 campos al formulario
+   - Validaciones en los campos.
+   
+### 2. Cómo se comunican los contenedores entre sí.
+### 3. Cómo confirmaron la persistencia de datos.
+### 4. Qué aprendieron sobre la modularidad y arquitectura cloud.
 
 
-Preguntas para la reflexión final
+## 🤔 Preguntas para la reflexión final
 1. ¿Qué diferencia hay entre un contenedor y una máquina virtual?
    
     La diferencia fundamental entre un contenedor y una máquina virtual (MV) se encuentra en la capa de virtualización. Un contenedor virtualiza la capa del sistema operativo, lo que lo hace mucho más ligero,         rápido y portátil; por ello, es ideal para arquitecturas de microservicios. En cambio, la máquina virtual virtualiza el hardware físico completo, proporcionando un entorno totalmente aislado, lo que la hace       más pesada y lenta, pero le otorga la máxima seguridad y una gran flexibilidad de sistema operativo.

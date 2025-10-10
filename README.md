@@ -56,16 +56,26 @@ El ejercicio permitió:
 
 ## 🗣️ Sustentación
 ### 1. Qué mejoras implementaron.
-
-   En cuanto al FrontEnd:
+En cuanto al FrontEnd:
    - Cambios en el diseño, paleta de colores, header, footer, botones, tabla, etc.
-   - Se agregaron 6 campos al formulario
+   - Se agregaron 6 campos al formulario.
    - Validaciones en los campos.
-   
-### 2. Cómo se comunican los contenedores entre sí.
-### 3. Cómo confirmaron la persistencia de datos.
-### 4. Qué aprendieron sobre la modularidad y arquitectura cloud.
 
+En cuanto al backend:
+   - Se agregó un nuevo microservicio de análisis de sentimientos para analizar la polaridad del campo 'mensaje' en el formulario
+   - Se creó una red tipo bridge llamada app-network y todos los contenedores son parte de esa red.
+### 2. Cómo se comunican los contenedores entre sí.
+Los contenedores se comunican entre sí principalmente a través de redes internas creadas por Docker o el orquestador (como Docker Compose o Kubernetes).
+En nuestro caso, al definir los servicios dentro del mismo docker-compose.yml, todos los contenedores comparten una misma red virtual, lo que les permite comunicarse usando el nombre del servicio como host.
+    
+### 3. Cómo confirmaron la persistencia de datos.
+La persistencia de datos se confirmó mediante el uso de volúmenes en Docker.
+Se configuró un volumen para el contenedor de base de datos, lo que garantiza que los datos almacenados en el sistema no se pierdan aunque el contenedor se detenga o se elimine.
+
+### 4. Qué aprendieron sobre la modularidad y arquitectura cloud.
+Aprendimos que la modularidad permite dividir el sistema en componentes independientes y reutilizables, lo que facilita el mantenimiento, la escalabilidad y las actualizaciones sin afectar todo el sistema.
+Además, la arquitectura basada en contenedores y servicios se asemeja a la arquitectura cloud nativa, donde cada componente (base de datos, backend, frontend, etc.) funciona como un microservicio.
+Esto nos ayudó a comprender cómo las aplicaciones modernas se despliegan en la nube de forma desacoplada, escalable y con alta disponibilidad, aprovechando tecnologías como Docker, Kubernetes y servicios gestionados.
 
 ## 🤔 Preguntas para la reflexión final
 1. ¿Qué diferencia hay entre un contenedor y una máquina virtual?
@@ -105,4 +115,10 @@ datos?
       
 7. ¿Qué elementos del ejercicio serían equivalentes a servicios en AWS o
 Azure?
+    - **Base de datos**: SQL DataBase - S3  o Amazon RDS
+    - **Token JWT**: Entra ID - AWS Identity
+    - **Hosting**: Appservice - AWS App Runner
+    
 8. ¿Cómo se evidenció el trabajo colaborativo dentro del equipo?
+    -Con la definicion de cada uno de los roles y las asginaciones, algunos compañeros no siguieron en el proceso y sin embargo a redistribución de tareas para cumplir con el taller.
+

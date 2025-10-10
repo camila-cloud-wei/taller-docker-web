@@ -47,7 +47,6 @@ docker compose ps
 ## 💾 Almacenamiento de Datos
 - ### Conexión PDO en db.php
     La clase PDO en creae una una instancia que representa la conexión con la base de datos, a la clase se le envían el parámetro de dsn con los datos necesarios para conectar a la base de datos como host, nombre de base de datos, usuario, contraseña e información del driver.
-- ### Conexión PDO en db.php
 
 ## 🌩️ ¿Cómo se relaciona esto con la arquitectura Cloud?
 El ejercicio permitió:

@@ -1,6 +1,13 @@
 <?php
 include 'db.php';
-
+require_once 'jwt.php';
+include 'db.php';
+$secret = getenv('JWT_SECRET') ?: 'MiSecretoSuperSeguro_ChangeMe_123';
+$token = $_COOKIE['auth_token'] ?? null;
+if (!$token) { header('Location: http://localhost:8082/login.php'); exit; }
+list($ok, $data) = jwt_decode($token, $secret);
+if (!$ok) { header('Location: http://localhost:8082/login.php'); exit; }
+$usuario_actual = $data['sub'] ?? 'usuario';
 $message = "";
 
 // if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -208,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <h1>🐋 Taller de Arquitectura Cloud</h1>
             <h2>Contenedores con Docker y PHP + MySQL</h2>
         </div>
+        <h1>🌐 App protegida (Docker)</h1><div class="userbar">👤 <?= htmlspecialchars($usuario_actual) ?> | <a href="http://localhost:8082/logout.php">Cerrar sesión</a></div>
     </div>
 </header>
 

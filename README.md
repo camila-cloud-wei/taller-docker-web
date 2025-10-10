@@ -56,14 +56,14 @@ El ejercicio permitió:
 
 ## 🗣️ Sustentación
 ### 1. Qué mejoras implementaron.
-
+En cuanto al Backend:
+   - Se agregó un nuevo microservicio de análisis de sentimientos para analizar la polaridad del campo 'mensaje' en el formulario
+   - Se creó una red tipo bridge llamada app-network y todos los contenedores son parte de esa red
 En cuanto al FrontEnd:
    - Cambios en el diseño, paleta de colores, header, footer, botones, tabla, etc.
    - Se agregaron 6 campos al formulario
    - Validaciones en los campos.
-En cuanto al Backend:
-   - Se agregó un nuevo microservicio de análisis de sentimientos para analizar la polaridad del campo 'mensaje' en el formulario
-   - Se creó una red tipo bridge llamada app-network y todos los contenedores son parte de esa red
+
     
 ### 2. Cómo se comunican los contenedores entre sí.
     

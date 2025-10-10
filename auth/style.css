@@ -1,7 +1,223 @@
-body{font-family:Arial,sans-serif;background:#f6f8fb;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0}
-.card{background:#fff;padding:24px;border-radius:12px;width:360px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
-h2{margin-top:0;color:#0a2540}
-label{display:block;margin:10px 0 6px;font-weight:600}
-input{width:100%;padding:10px 12px;border:1px solid #cfd8e3;border-radius:8px}
-button{margin-top:14px;width:100%;background:#0069d9;color:#fff;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:15px}
-button:hover{background:#0058b5}.error{color:#8a1c1c;background:#fde8e8;padding:8px;border-radius:8px}a{color:#0069d9}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Header Compacto */
+.compact-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #0a2540;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.compact-header .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.compact-header .logo-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #4fc3f7;
+}
+
+.compact-header h1 {
+    font-size: 1.5rem;
+    margin: 5px 0;
+    color: #4fc3f7;
+}
+
+.compact-header h2 {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: #e3f2fd;
+}
+
+/* Tarjeta de Login Compacta */
+.auth-card-compact {
+    background: white;
+    border-radius: 15px;
+    padding: 40px 35px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3);
+    width: 100%;
+    max-width: 420px;
+    margin-top: 80px; /* Espacio para el header */
+}
+
+.auth-card-compact h2 {
+    color: #0a2540;
+    margin-bottom: 25px;
+    font-size: 1.6rem;
+    border-bottom: 3px solid #4fc3f7;
+    padding-bottom: 12px;
+    text-align: center;
+}
+
+.auth-form-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.auth-form-compact .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-form-compact label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #0a2540;
+    font-size: 0.95rem;
+}
+
+.auth-form-compact input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    font-family: 'Roboto', sans-serif;
+}
+
+.auth-form-compact input:focus {
+    outline: none;
+    border-color: #4fc3f7;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.15);
+    transform: translateY(-1px);
+}
+
+.auth-form-compact button {
+    background: linear-gradient(135deg, #0078d7, #005fa3);
+    color: white;
+    border: none;
+    padding: 14px 25px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 120, 215, 0.3);
+    width: 100%;
+    margin-top: 8px;
+}
+
+.auth-form-compact button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 120, 215, 0.4);
+    background: linear-gradient(135deg, #005fa3, #004a7c);
+}
+
+.auth-links-compact {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #e8e8e8;
+}
+
+.auth-links-compact a {
+    color: #0078d7;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.auth-links-compact a:hover {
+    color: #005fa3;
+    text-decoration: underline;
+}
+
+/* Alert Styles */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.95rem;
+    border: 2px solid transparent;
+}
+
+.alert.success {
+    background-color: #e8f5e8;
+    color: #2e7d32;
+    border-color: #4caf50;
+}
+
+.alert.error {
+    background-color: #ffebee;
+    color: #c62828;
+    border-color: #f44336;
+}
+
+.alert.warning {
+    background-color: #fff8e1;
+    color: #f57f17;
+    border-color: #ffc107;
+}
+
+/* Footer Compacto */
+.compact-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #0a2540;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.compact-footer p {
+    color: #90caf9;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+    
+    .auth-card-compact {
+        padding: 30px 25px;
+        margin-top: 70px;
+    }
+    
+    .auth-card-compact h2 {
+        font-size: 1.4rem;
+    }
+    
+    .compact-header h1 {
+        font-size: 1.3rem;
+    }
+}

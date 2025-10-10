@@ -105,4 +105,10 @@ datos?
       
 7. ¿Qué elementos del ejercicio serían equivalentes a servicios en AWS o
 Azure?
+    - **Base de datos**: SQL DataBase - S3  o Amazon RDS
+    - **Token JWT**: Entra ID - AWS Identity
+    - **Hosting**: Appservice - AWS App Runner
+    
 8. ¿Cómo se evidenció el trabajo colaborativo dentro del equipo?
+    -Con la definicion de cada uno de los roles y las asginaciones, algunos compañeros no siguieron en el proceso y sin embargo a redistribución de tareas para cumplir con el taller.
+

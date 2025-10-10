@@ -5,9 +5,8 @@ $username = 'appuser';
 $password = 'app123';
 
 try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
     // Verificar si la tabla existe
     $tableExists = $conn->query("SHOW TABLES LIKE 'mensajes'")->rowCount() > 0;
     

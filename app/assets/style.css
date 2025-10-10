@@ -400,4 +400,47 @@ footer {
         padding: 12px 8px;
         font-size: 0.9rem;
     }
+
+    /* Sentiment Analysis Styles */
+.sentiment-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.sentiment-positive {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.sentiment-negative {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.sentiment-neutral {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+.message-cell {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Real-time analysis preview */
+.sentiment-preview {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+}
+
+.sentiment-preview.visible {
+    display: block;
+}
 }

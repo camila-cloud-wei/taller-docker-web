@@ -3,6 +3,57 @@ include 'db.php';
 
 $message = "";
 
+// if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//     $nombre = htmlspecialchars($_POST['nombre']);
+//     $correo = htmlspecialchars($_POST['correo']);
+//     $telefono = htmlspecialchars($_POST['telefono']);
+//     $tipo_consulta = htmlspecialchars($_POST['tipo_consulta']);
+//     $categoria = htmlspecialchars($_POST['categoria']);
+//     $mensaje = htmlspecialchars($_POST['mensaje']);
+
+//     if (!empty($nombre) && !empty($correo) && !empty($telefono) && !empty($tipo_consulta) && !empty($categoria) && !empty($mensaje)) {
+//         try {
+//             $sql = "INSERT INTO mensajes (nombre, correo, telefono, tipo_consulta, categoria, mensaje) VALUES (?, ?, ?, ?, ?, ?)";
+//             $stmt = $conn->prepare($sql);
+//             $stmt->execute([$nombre, $correo, $telefono, $tipo_consulta, $categoria, $mensaje]);
+//             $message = "<div class='alert success'>✅ Mensaje guardado correctamente.</div>";
+//         } catch (PDOException $e) {
+//             $message = "<div class='alert error'>❌ Error al guardar el mensaje: " . $e->getMessage() . "</div>";
+//         }
+//     } else {
+//         $message = "<div class='alert warning'>⚠️ Por favor, completa todos los campos.</div>";
+//     }
+// }
+
+// $stmt = $conn->query("SELECT * FROM mensajes ORDER BY fecha DESC");
+// $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Sentiment Analysis function
+function analyzeSentiment($text) {
+    $url = "http://sentiment-service:5000/analyze";
+    
+    $data = json_encode(["text" => $text]);
+    
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+    
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    
+    if ($httpCode === 200 && $response) {
+        return json_decode($response, true);
+    }
+    
+    return null;
+}
+
+// Handle form submission with sentiment analysis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = htmlspecialchars($_POST['nombre']);
     $correo = htmlspecialchars($_POST['correo']);
@@ -10,12 +61,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tipo_consulta = htmlspecialchars($_POST['tipo_consulta']);
     $categoria = htmlspecialchars($_POST['categoria']);
     $mensaje = htmlspecialchars($_POST['mensaje']);
+    $sentiment_analysis = null;
 
     if (!empty($nombre) && !empty($correo) && !empty($telefono) && !empty($tipo_consulta) && !empty($categoria) && !empty($mensaje)) {
         try {
-            $sql = "INSERT INTO mensajes (nombre, correo, telefono, tipo_consulta, categoria, mensaje) VALUES (?, ?, ?, ?, ?, ?)";
+            // Analyze sentiment before saving
+            $sentiment_analysis = analyzeSentiment($mensaje);
+            
+            $sql = "INSERT INTO mensajes (nombre, correo, telefono, tipo_consulta, categoria, mensaje, sentiment_data) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->execute([$nombre, $correo, $telefono, $tipo_consulta, $categoria, $mensaje]);
+            $sentiment_json = $sentiment_analysis ? json_encode($sentiment_analysis) : null;
+            $stmt->execute([$nombre, $correo, $telefono, $tipo_consulta, $categoria, $mensaje, $sentiment_json]);
             $message = "<div class='alert success'>✅ Mensaje guardado correctamente.</div>";
         } catch (PDOException $e) {
             $message = "<div class='alert error'>❌ Error al guardar el mensaje: " . $e->getMessage() . "</div>";
@@ -25,7 +81,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$stmt = $conn->query("SELECT * FROM mensajes ORDER BY fecha DESC");
+// Update database query to include sentiment data
+$stmt = $conn->query("SELECT *, COALESCE(sentiment_data, '{}') as sentiment_data FROM mensajes ORDER BY fecha DESC");
 $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -35,7 +92,8 @@ $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <meta charset='UTF-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 <title>Arquitectura Cloud - Contenedores Docker</title>
-<link rel='stylesheet' href='style.css'>
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png"/>
+<link rel='stylesheet' href='assets/style.css'>
 <link href='https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap' rel='stylesheet'>
 <script>
 function validarFormulario() {
@@ -155,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <main>
     <section class='form-section full-width'>
-        <h3>📝 Formulario de Contacto</h3>
+        <h3>📝 Formulario de Análisis de Sentimientos</h3>
         <?= $message ?>
         <form method='POST' onsubmit='return validarFormulario();'>
             <div class="form-grid">
@@ -202,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 
                 <div class="form-group full-width">
-                    <label for='mensaje'>Mensaje:</label>
+                    <label for='mensaje'>¿Cómo te sientes el día de hoy?:</label>
                     <textarea name='mensaje' id='mensaje' rows='5' placeholder='Escribe tu mensaje...' required></textarea>
                     <span class="error-message" id="mensajeError"></span>
                 </div>
@@ -214,43 +272,64 @@ document.addEventListener('DOMContentLoaded', function() {
         </form>
     </section>
 
-    <section class='table-section full-width'>
-        <h3>📋 Mensajes registrados</h3>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Teléfono</th>
-                        <th>Tipo Consulta</th>
-                        <th>Categoría</th>
-                        <th>Mensaje</th>
-                        <th>Fecha</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (count($mensajes) > 0): ?>
-                        <?php foreach ($mensajes as $fila): ?>
-                            <tr>
-                                <td><?= $fila['id'] ?></td>
-                                <td><?= htmlspecialchars($fila['nombre']) ?></td>
-                                <td><?= htmlspecialchars($fila['correo']) ?></td>
-                                <td><?= htmlspecialchars($fila['telefono']) ?></td>
-                                <td><?= htmlspecialchars($fila['tipo_consulta']) ?></td>
-                                <td><?= htmlspecialchars($fila['categoria']) ?></td>
-                                <td><?= htmlspecialchars($fila['mensaje']) ?></td>
-                                <td><?= $fila['fecha'] ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr><td colspan='8' style='text-align:center;'>Sin registros aún.</td></tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </section>
+<section class='table-section full-width'>
+    <h3>📋 Mensajes registrados + Análisis de Sentimiento</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Tipo Consulta</th>
+                    <th>Categoría</th>
+                    <th>Mensaje</th>
+                    <th>Sentimiento</th>
+                    <th>Polaridad</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (count($mensajes) > 0): ?>
+                    <?php foreach ($mensajes as $fila): 
+                        $sentiment_data = json_decode($fila['sentiment_data'], true);
+                        $analysis = $sentiment_data['analysis'] ?? null;
+                    ?>
+                        <tr>
+                            <td><?= $fila['id'] ?></td>
+                            <td><?= htmlspecialchars($fila['nombre']) ?></td>
+                            <td><?= htmlspecialchars($fila['correo']) ?></td>
+                            <td><?= htmlspecialchars($fila['telefono']) ?></td>
+                            <td><?= htmlspecialchars($fila['tipo_consulta']) ?></td>
+                            <td><?= htmlspecialchars($fila['categoria']) ?></td>
+                            <td class="message-cell"><?= htmlspecialchars($fila['mensaje']) ?></td>
+                            <td>
+                                <?php if ($analysis): ?>
+                                    <span class="sentiment-badge sentiment-<?= $analysis['sentiment'] ?>">
+                                        <?= $analysis['emoji'] ?> <?= ucfirst($analysis['sentiment']) ?>
+                                    </span>
+                                <?php else: ?>
+                                    <span class="sentiment-badge">📊 No analizado</span>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if ($analysis): ?>
+                                    <?= $analysis['polarity'] ?>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
+                            <td><?= $fila['fecha'] ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr><td colspan='10' style='text-align:center;'>Sin registros aún.</td></tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</section>
 </main>
 
 <footer>
@@ -277,6 +356,6 @@ document.addEventListener('DOMContentLoaded', function() {
         <p> </p>
     </div>
 </footer>
-<script src='script.js'></script>
+<script src='assets/script.js'></script>
 </body>
 </html>

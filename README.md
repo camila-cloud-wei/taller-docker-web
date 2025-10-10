@@ -46,7 +46,6 @@ docker compose ps
 ## 💾 Almacenamiento de Datos
 - ### Conexión PDO en db.php
     La clase PDO en creae una una instancia que representa la conexión con la base de datos, a la clase se le envían el parámetro de dsn con los datos necesarios para conectar a la base de datos como host, nombre de base de datos, usuario, contraseña e información del driver.
-- ### Conexión PDO en db.php
 
 ## 🌩️ REFLEXIÓN ¿Cómo se relaciona esto con la arquitectura Cloud?
 El ejercicio permitió:
@@ -80,7 +79,16 @@ El ejercicio permitió:
    
 3. ¿Qué rol cumple el archivo docker-compose.yml en la orquestación de
 servicios?
+ > - El archivo Docker compose se encarga de cargar los servicios y sus dependencias de forma centralizada para aplicaciones donde se utilice la estrategia de multi contenerización, esto significa  que cuando se está utilizando por ejemplo el servicio de frontend, backend y base de datos en contenedores distintos, docker compose se encarga de subir todos los servicios a través de un solo comando en lugar de subir cada contenedor manualmente.  El archivo docker compose es declarativo y se compone de objetos como servicios, volúmenes, variables de entorno, configuraciones de red. 
+
 4. ¿Cómo se comunican los contenedores entre sí dentro de la red interna?
+
+ > -   Por defecto, docker utiliza una red interna en la que solo puede ver su interfaz de red con una dirección IP, una IP de puerta de enlace, una tabla de enrutamiento y otros componentes de red. 
+Docker utiliza driver de red en el que cada uno tiene un comportamiento distinto. 
+Por defecto, docker utiliza el driver llamado bridge para crear una red interna aislada en el host y permite que los contenedores se hablen entre si al crearlos dentro del mismo rango de red. 
+Para particularidad del ejercicio, se creó una red dentro del docker compose llamada app-network y de tipo bridge, y se le asignó a cada servicio esta red.
+
+
 5. ¿Por qué es importante separar la aplicación web del motor de base de
 datos?
     - **Seguridad**: Si se compromete la aplicación web, el atacante no tiene acceso directo a la base de datos.
